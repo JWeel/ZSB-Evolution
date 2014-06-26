@@ -71,12 +71,16 @@ public class Drawer extends JPanel {
 	JLabel currentMoveStrengthModifier = new JLabel("", JLabel.CENTER);
 	JSlider moveStrengthModifierSlider = new JSlider(JSlider.HORIZONTAL, 0, 200, 20);
 	
-	JCheckBox allowCannibalismButton = new JCheckBox("Canibalism");
+	JCheckBox allowCannibalismButton = new JCheckBox("Cannibalism");
+	JCheckBox allowEqualityButton = new JCheckBox("Equality");
 
-	JButton settingsButtonJ = new JButton("eternal");
-	JButton settingsButtonR = new JButton("stationary");
-	JButton settingsButtonM = new JButton("practical");
-	JButton settingsButtonK = new JButton("natural");
+	JLabel settingsLabel = new JLabel("Default Worlds:", JLabel.CENTER);
+	JButton settingsButtonJ = new JButton("Eternal");
+	JButton settingsButtonR = new JButton("Gangs");
+	JButton settingsButtonM = new JButton("Practical");
+	JButton settingsButtonK = new JButton("Countries");
+	JButton settingsButtonF = new JButton("No Food");
+	JButton settingsButtonE = new JButton("Fair Odds");
 	
 	JTextField iterateRest = new JTextField("Min iterates");
 	String iterateRestValue = new String("");
@@ -207,12 +211,19 @@ public class Drawer extends JPanel {
 		moveStrengthModifierSlider.addChangeListener(bl);
 		moveStrengthModifierSlider.setFocusable(false);
 		
-		allowCannibalismButton.setBounds(825, 500, 100, 35);
-	    allowCannibalismButton.setSelected(true);
+		allowCannibalismButton.setBounds(825, 460, 100, 35);
 	    allowCannibalismButton.setFocusable(false);
 	    allowCannibalismButton.addItemListener(bl);
 	    allowCannibalismButton.setSelected(settings.allowCannibalism);
+	    
+	    allowEqualityButton.setBounds(825, 495, 100, 35);
+		allowEqualityButton.setFocusable(false);
+		allowEqualityButton.addItemListener(bl);
+		allowEqualityButton.setSelected(settings.equality);
 
+	    settingsLabel.setBounds(847, 540, 94, 20);
+	    //settingsLabel.setFocusable(false);
+	    
 		settingsButtonJ.setBounds(800, 560, 94, 20);
 		settingsButtonJ.setFocusable(false);
 		settingsButtonJ.setActionCommand("jSettings");
@@ -233,6 +244,15 @@ public class Drawer extends JPanel {
 		settingsButtonK.setActionCommand("kSettings");
 		settingsButtonK.addActionListener(bl);
 
+		settingsButtonF.setBounds(800,600,94,20);
+		settingsButtonF.setFocusable(false);
+		settingsButtonF.setActionCommand("fSettings");
+		settingsButtonF.addActionListener(bl);
+		
+		settingsButtonE.setBounds(894,600,94,20);
+		settingsButtonE.setFocusable(false);
+		settingsButtonE.setActionCommand("eSettings");
+		settingsButtonE.addActionListener(bl);
 		
 		/*
 		iterateRest.setBounds(849, 605, 80,20);
@@ -282,11 +302,15 @@ public class Drawer extends JPanel {
 		super.add(moveStrengthModifierSlider);
 		
 		super.add(allowCannibalismButton);
+		super.add(allowEqualityButton);
 		
+		super.add(settingsLabel);
 		super.add(settingsButtonJ);
 		super.add(settingsButtonM);
 		super.add(settingsButtonR);
 		super.add(settingsButtonK);
+		super.add(settingsButtonF);
+		super.add(settingsButtonE);
 		
 		//super.add(iterateRest);
 		
@@ -417,6 +441,9 @@ public class Drawer extends JPanel {
 	    	if ("rSettings".equals(e.getActionCommand())) updateSliderValues('r');
 	    	if ("mSettings".equals(e.getActionCommand())) updateSliderValues('m');
 	    	if ("kSettings".equals(e.getActionCommand())) updateSliderValues('k');
+	    	if ("fSettings".equals(e.getActionCommand())) updateSliderValues('f');
+	    	if ("eSettings".equals(e.getActionCommand())) updateSliderValues('e');
+
 	    	
 	    	//if ("iterator".equals(e.getActionCommand())) iterateRestValue = "text1 : " + e.getActionCommand();
 	    	//if (e.getSource() == iterateRest) {
@@ -481,6 +508,7 @@ public class Drawer extends JPanel {
         	}
 	    }
 	    
+	    // handles pressing of checkboxes
 	    public void itemStateChanged(ItemEvent e) {
 	    	Settings settings = Settings.getInstance();
 	    	Object source = e.getItemSelectable();
@@ -491,6 +519,14 @@ public class Drawer extends JPanel {
 	        	}
 	        	else {
 	        		settings.allowCannibalism = true;
+	        	}
+	        }
+	        if (source == allowEqualityButton) {
+	        	if (e.getStateChange() == ItemEvent.DESELECTED) {
+	        		settings.equality = false;
+	        	}
+	        	else {
+	        		settings.equality = true;
 	        	}
 	        }
 	        

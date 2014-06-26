@@ -4,7 +4,7 @@ public class Main {
 	
 	public static void main(String[] args) {
 		
-		Screen screen = new Screen("Evolution V1.33");		
+		Screen screen = new Screen("Evolution V1.34");		
 		screen.core.run();
 	}
 

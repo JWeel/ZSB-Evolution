@@ -110,10 +110,15 @@ public class World {
 					if (goOn && 
 						getCellAtPositionCurrent(tile.x, tile.y) == null &&
 						Math.random() > probabilityCellGen) {
-						// generate tile on cell
 						// choose randomly a type
 						int cellType = minType + (int)(random.nextDouble() * (((minType + diffTypes) - minType - 1) + 1));						
-						currentCells.add(new Cell(this, tile.x, tile.y, cellType));
+						
+						// make random cell or make cell with same DNA
+						if (settings.equality && !currentCells.isEmpty()) {
+							currentCells.add(new Cell(this, tile.x,tile.y,cellType,currentCells.get(0).properties.getDNA()));
+						} else {
+							currentCells.add(new Cell(this, tile.x, tile.y, cellType));
+						}
 					}
 					//System.out.println((currentCells.size() / (float)(tileCount * tileCount)));
 					goOn = (currentCells.size() / (float)(TILE_COUNT * TILE_COUNT)) < percentageWorldFilled;
