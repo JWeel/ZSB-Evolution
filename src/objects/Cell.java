@@ -1,5 +1,4 @@
 package objects;
-
 import java.awt.Image;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -14,11 +13,8 @@ import framework.World;
 
 public class Cell {
 
-	//public static final int MaxTypes = 9;
-
 	// properties of cell. 
-	public Properties properties;
-	
+	public Properties properties;	
 	public Image img;
 	
 	// list of behaviours available to cell
@@ -27,9 +23,8 @@ public class Cell {
 	// location
 	public int x;			
 	public int y;
-	
 	public int type; // type of cell
-	
+
 	public boolean isHunting;
 	
 	// reference back to the world
@@ -64,9 +59,7 @@ public class Cell {
 		y = locY;
 		
 		type = t;
-		if (type > World.maxTypes || type < 1) {
-			type = 1;
-		}
+		if (type > World.maxTypes || type < 1) type = 1;
 		
 		img = new ImageIcon("src/art/Cell" + Integer.toString(type) + ".png").getImage();
 		
@@ -74,24 +67,19 @@ public class Cell {
 		worldRef = new WeakReference<World>(w);
 		
 		// order may still need to be randomized based on type or DNA, although that will mean rapid extinction
-		behaviours = new ArrayList<Behaviour>();
+		behaviours = new ArrayList<Behaviour>(5);
 
 		//behaviours.add(new DEBUGCloneToSurroundingsBehaviour());
 		behaviours.add(new MateBehaviour());
 		behaviours.add(new HuntBehaviour());
-
 		behaviours.add(new FleeBehaviour());
-		//behaviours.add(new ApproachCenterBehaviour());
-		//behaviours.add(new ApproachBorderBehaviour());
 		behaviours.add(new WanderBehaviour());
 		behaviours.add(new StayBehaviour());
 	}
 
 	public boolean isAlive() {
 		// i think this can be removed. lets check it later
-		if (properties.getCurrentEnergy() < 0) {
-			properties.setCurrentEnergy(0);
-		}
+		if (properties.getCurrentEnergy() < 0) properties.setCurrentEnergy(0);
 		return properties.getIsAlive();
 	}
 	
@@ -155,13 +143,10 @@ public class Cell {
 		String newDNA = worldRef.get().cBreeder.breed(ownDNA, otherDNA)[random.getRandom().nextInt(2)];
 		
 		ArrayList<Tile> tiles = getFreeNeighbours();
-		
 		if (!tiles.isEmpty()) {
 			
-			RandomGenerator gen = RandomGenerator.getInstance();
-			
+			RandomGenerator gen = RandomGenerator.getInstance();		
 			int destIndex = gen.getRandom().nextInt(tiles.size());
-			
 			Tile babySpot = tiles.get(destIndex);
 			
 			if (babySpot.worldRef.get().getCellAtPositionNext(babySpot.x,babySpot.y)==null){
@@ -169,30 +154,19 @@ public class Cell {
 				double energyCost = Settings.getInstance().matingEnergyCost;
 	
 				int energyLostCellPart = (int)Math.ceil(part.properties.getMaxEnergy() * energyCost);
-				if (energyLostCellPart <= 0) {
-					energyLostCellPart = 1;
-				}
+				if (energyLostCellPart <= 0) energyLostCellPart = 1;
 				
 				int energyLostCell2 = (int)Math.ceil(properties.getMaxEnergy() * energyCost);
-				if (energyLostCell2 <= 0) {
-					energyLostCell2 = 1;
-				}  
-				
-				//System.out.println("partner energy: " + part.properties.getCurrentEnergy());
-				//System.out.println("energyLostCell Partner: " + energyLostCellPart);
-				//System.out.println("own energy: " + properties.getCurrentEnergy());
-				//System.out.println("own energy lost: " + energyLostCell2);
+				if (energyLostCell2 <= 0) energyLostCell2 = 1;
 				
 				part.properties.setCurrentEnergy(part.properties.getCurrentEnergy() - energyLostCellPart);
 				properties.setCurrentEnergy(properties.getCurrentEnergy() - energyLostCell2);
 				
 				Cell c = new Cell(worldRef.get(), babySpot.x, babySpot.y, type, newDNA);
-	
 				worldRef.get().nextCells.add(c);
 				//System.out.println("New cell born.");
 				
 				worldRef.get().lastStepCellsBorn++;
-			
 				return true;
 			}
 		}
@@ -233,7 +207,6 @@ public class Cell {
 		// loop towards until a move can be made
 		while (!this.getMoveSet().contains(destination)){
 			madeItInOneMove = false;
-			
 			ArrayList<Tile> tiles = getMoveSet();
 			
 			double distance = 500;
@@ -244,7 +217,6 @@ public class Cell {
 				Dx = tile.x - destination.x; 
 				Dy = tile.y - destination.y;
 				double newDistance = Math.sqrt(Dx * Dx + Dy * Dy);
-				
 				if (newDistance < distance) {
 					distance = newDistance;
 					bestTile = tile;

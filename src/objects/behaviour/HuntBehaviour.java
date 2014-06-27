@@ -1,5 +1,4 @@
 package objects.behaviour;
-
 import java.util.ArrayList;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -24,11 +23,11 @@ public class HuntBehaviour extends Behaviour {
 
 		// first search for other cells in area
 		Tile target = scour(perception, c);
-		// if found, check if you can eat/beat them
+		// if found, check if you can move to them
 		if (target != null) {
-			if (c.moveTo(target)) {
-				c.stab(prey);
-			}
+			// if you can move to them, try to beat and eat them
+			if (c.moveTo(target)) c.stab(prey);
+			// even if cell can't eat/beat its prey, return true because cell has already moved
 			return true;
 		}
 		// if not found, return (do nothing) ==> will automatically try another behaviour
@@ -64,11 +63,9 @@ public class HuntBehaviour extends Behaviour {
 	public Tile chooseTarget(CopyOnWriteArrayList<Cell> targets, Cell me){
 		// cant do for cell in targets because of concurrent modification, so need a while true loop
 		for (Cell potentialFood : targets) {
-		
 			if (!(isWeaker(potentialFood,me)) || !(me.properties.getCurrentEnergy() < me.properties.getMaxEnergy() * veryHungryRate)) {
 				targets.remove(potentialFood);
 			}
-		
 		}
 		// now that it has filtered its list to only targets it wants to beat, it is time to pick one
 		return bestOfTargets(targets, me);
@@ -77,7 +74,6 @@ public class HuntBehaviour extends Behaviour {
 	// filters list until only one target is left, based on energy and/or strength
 	public Tile bestOfTargets(CopyOnWriteArrayList<Cell> targets, Cell me){
 		if (targets.isEmpty()) return null;	
-		
 		Tile optimalTile = null;
 		
 		// check if a target has an empty space next to it
@@ -94,18 +90,10 @@ public class HuntBehaviour extends Behaviour {
 				optimalTile = tile;
 				prey = target;
 			}
-
 		}
 		
-		//
-		if (optimalTile == null){
-			return null;
-		}
-		
-		// DEBUG write lines to show it hunting
-		//System.out.println("target found: " + targets.get(0).type + " " + targets.get(0).x + " " + targets.get(0).y);
-		// END DEBUG line
-		
+		// if no tile found, this behaviour won't do much so return null
+		if (optimalTile == null) return null;
 		return optimalTile;
 	}
 	
@@ -116,15 +104,13 @@ public class HuntBehaviour extends Behaviour {
 		if (target.type != me.type) {
 			int friendStrength = 0;
 			ArrayList <Tile> vision = me.getPerceptionSet(); 
-			ArrayList <Cell> friends = new ArrayList<Cell>();
-			
+			ArrayList <Cell> friends = new ArrayList<Cell>(96);
 			for(Tile t : vision) {
 				Cell cell = t.worldRef.get().getCellAtPositionNext(t.x, t.y);
 				if (cell != null && cell != me && cell.type == me.type) {
 					friends.add(cell);
 				}
 			}
-			
 			for (Cell friend : friends) friendStrength += friend.properties.getStrength();
 			meStrength += friendStrength;
 		}

@@ -1,5 +1,5 @@
 package framework;
-import java.awt.Color;
+//import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -13,14 +13,11 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JButton;
 import javax.swing.JSlider;
-import javax.swing.JTextField;
+//import javax.swing.JTextField;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import objects.Cell;
-
-
-
 
 public class Drawer extends JPanel {
 
@@ -80,11 +77,10 @@ public class Drawer extends JPanel {
 	JButton settingsButtonM = new JButton("Practical");
 	JButton settingsButtonK = new JButton("Countries");
 	JButton settingsButtonF = new JButton("No Food");
-	JButton settingsButtonE = new JButton("Fair Odds");
+	JButton settingsButtonE = new JButton("Adapt/Die");
 	
-	JTextField iterateRest = new JTextField("Min iterates");
-	String iterateRestValue = new String("");
-
+	//JTextField iterateRest = new JTextField("Min iterates");
+	//String iterateRestValue = new String("");
 	
 	public Drawer(World c) {
 		
@@ -96,7 +92,6 @@ public class Drawer extends JPanel {
 		cycleButton.setActionCommand("cycle");
 		cycleButton.addActionListener(bl);
 		
-		
 		cellTypeAmountLabel.setBounds(800, -20, 80, 90);
 		
 		currentCellTypeAmount.setBounds(800, 0, 80, 90);
@@ -106,7 +101,6 @@ public class Drawer extends JPanel {
 		cellTypeAmountSlider.setBounds(800, 60, 80, 30);
 		cellTypeAmountSlider.addChangeListener(bl);
 		cellTypeAmountSlider.setFocusable(false);
-		
 		
 		fillRateLabel.setBounds(900, -20, 80, 90);
 		
@@ -128,7 +122,6 @@ public class Drawer extends JPanel {
 		clearButton.setActionCommand("clear");
 		clearButton.addActionListener(bl);
 		
-
 		crossoverLabel.setBounds(620, 120, 160, 90);
 		
 		currentCrossoverRate.setBounds(620, 140, 160, 90);
@@ -138,7 +131,6 @@ public class Drawer extends JPanel {
 		crossoverRateSlider.setBounds(620, 200, 160, 30);
 		crossoverRateSlider.addChangeListener(bl);
 		crossoverRateSlider.setFocusable(false);
-		
 		
 		mutationLabel.setBounds(825, 120, 160, 90);
 		
@@ -156,7 +148,6 @@ public class Drawer extends JPanel {
 		//fillRateSlider.setLabelTable( labelTable );
 		//fillRateSlider.setPaintLabels(true);
 		
-		
 		matingEnergyRequirementLabel.setBounds(620, 220, 160, 90);
 		
 		currentMatingEnergyRequirement.setBounds(620, 240, 160, 90);
@@ -166,7 +157,6 @@ public class Drawer extends JPanel {
 		matingEnergyRequirementSlider.setBounds(620, 300, 160, 30);
 		matingEnergyRequirementSlider.addChangeListener(bl);
 		matingEnergyRequirementSlider.setFocusable(false);
-		
 		
 		eatingEnergyGainLabel.setBounds(825, 220, 160, 90);
 		
@@ -178,7 +168,6 @@ public class Drawer extends JPanel {
 		eatingEnergyGainSlider.addChangeListener(bl);
 		eatingEnergyGainSlider.setFocusable(false);
 		
-		
 		veryHungryThresholdLabel.setBounds(620, 320, 160, 90);
 		
 		currentVeryHungryThreshold.setBounds(620, 340, 160, 90);
@@ -189,7 +178,6 @@ public class Drawer extends JPanel {
 		veryHungryThresholdSlider.addChangeListener(bl);
 		veryHungryThresholdSlider.setFocusable(false);
 		
-		
 		startEnergyRateLabel.setBounds(825, 320, 160, 90);
 		
 		currentStartEnergyRate.setBounds(825, 340, 160, 90);
@@ -199,7 +187,6 @@ public class Drawer extends JPanel {
 		startEnergyRateSlider.setBounds(825, 400, 160, 30);
 		startEnergyRateSlider.addChangeListener(bl);
 		startEnergyRateSlider.setFocusable(false);
-		
 		
 		moveStrengthModifierLabel.setBounds(620, 420, 160, 90);
 		
@@ -222,7 +209,6 @@ public class Drawer extends JPanel {
 		allowEqualityButton.setSelected(settings.equality);
 
 	    settingsLabel.setBounds(847, 540, 94, 20);
-	    //settingsLabel.setFocusable(false);
 	    
 		settingsButtonJ.setBounds(800, 560, 94, 20);
 		settingsButtonJ.setFocusable(false);
@@ -344,11 +330,9 @@ public class Drawer extends JPanel {
 		if (tile != null) {
 			g.drawString("X: " + Integer.toString(tile.x), 1020, 150);
 			g.drawString("Y: " + Integer.toString(tile.y), 1020, 175);
-			
 			Cell selectedCell = world.getCellAtPositionCurrent(tile.x, tile.y);
 			
-			if (selectedCell != null)
-			{
+			if (selectedCell != null){
 				g.drawString("DNA Properties", 1020, 250);
 				g.drawString("DNA: " + selectedCell.properties.getDNA(), 1020, 275);
 				g.drawString("Max Energy: " + selectedCell.properties.getMaxEnergy(), 1020, 300);
@@ -362,7 +346,7 @@ public class Drawer extends JPanel {
 		}
 	}
 	
-	// for stats
+	// for stats (for cell ID...)
 	private void paintStats(Graphics g){
 		//g.drawImage(infoBg, 1000, 25, 300, 600, null);
 		Tile tile = world.selected;
@@ -370,68 +354,51 @@ public class Drawer extends JPanel {
 		if (tile != null) {
 			g.drawString("X: " + Integer.toString(tile.x), 1020, 150);
 			g.drawString("Y: " + Integer.toString(tile.y), 1020, 175);
-			
 			Cell selectedCell = world.getCellAtPositionCurrent(tile.x, tile.y);
 			
-			if (selectedCell != null)
-			{
+			if (selectedCell != null){
+				g.drawString("Cell ID", 1020, 525);
+				//g.setColor(Color.green);
+				g.drawString("-----------", 1020, 535);
+				//g.setColor(Color.darkGray);
 				g.drawString(selectedCell.toString(), 1020, 550);
-				g.drawString("Stats and Stuff", 1020, 525);
-				g.setColor(Color.green);
-				g.drawString("-------------------", 1020, 535);
-				g.setColor(Color.darkGray);
 				//g.drawString("13th strange prime = 101", 1020, 550); 
 			}
 		}
 	}
 
-
 	private void paintSelected(Graphics g) {
 		Tile t = world.selected;
 		if (t != null) {
-			
-			
 			g.drawImage(select, t.x + world.xOffSet - world.TILE_SIZE / 2 , t.y + world.yOffSet - world.TILE_SIZE /2, world.TILE_SIZE , world.TILE_SIZE , null);
 		}
 	}
 		
 	private void paintCells(Graphics g) {
-		for(Cell cell : world.getCells()){
-			
+		for(Cell cell : world.getCells()){	
 			int drawX = cell.x + world.xOffSet - world.TILE_SIZE / 2;
 			int drawY = cell.y + world.yOffSet - world.TILE_SIZE / 2; 
 			g.drawImage(cell.img, drawX, drawY, world.TILE_SIZE, world.TILE_SIZE, null);
-		}
-		
+		}	
 	}
 	
 	public void notifyIterationsEnd(){
 		cycleButton.setText("Start Cycle (space)");
 	}
-	
 	private ButtonListener bl = new ButtonListener();
 	
+	
 	class ButtonListener implements ActionListener, ChangeListener, ItemListener {
-				
+		
 	    public void actionPerformed(ActionEvent e) {
-	    	
-	    	if ("populate".equals(e.getActionCommand())) 
-	    	{
-	    		world.populate();
-	    	}
-	    	if ("clear".equals(e.getActionCommand()))
-	    	{
-	    		world.clear();
-	    	}
-	    	if ("cycle".equals(e.getActionCommand()))
-	    	{
-	    		if (world.doIterate == false) 
-	    		{
+	    	if ("populate".equals(e.getActionCommand())) world.populate();
+	    	if ("clear".equals(e.getActionCommand())) world.clear();
+	    	if ("cycle".equals(e.getActionCommand())){
+	    		if (world.doIterate == false) {
 					world.doIterate = true;
 					cycleButton.setText("Stop Cycle (space)");
 	    		}
-	    		else
-	    		{
+	    		else{
 	    			world.doIterate = false;
 					cycleButton.setText("Start Cycle (space)");
 	    		}
@@ -443,7 +410,6 @@ public class Drawer extends JPanel {
 	    	if ("kSettings".equals(e.getActionCommand())) updateSliderValues('k');
 	    	if ("fSettings".equals(e.getActionCommand())) updateSliderValues('f');
 	    	if ("eSettings".equals(e.getActionCommand())) updateSliderValues('e');
-
 	    	
 	    	//if ("iterator".equals(e.getActionCommand())) iterateRestValue = "text1 : " + e.getActionCommand();
 	    	//if (e.getSource() == iterateRest) {
@@ -453,56 +419,42 @@ public class Drawer extends JPanel {
 	    
 	    public void stateChanged(ChangeEvent e) {
 	    	Settings settings = Settings.getInstance();
-	    	
 	        JSlider source = (JSlider)e.getSource();
         	int value = (int)source.getValue();
         	
-        	if (source == fillRateSlider)
-        	{
+        	if (source == fillRateSlider){
         		if (!source.getValueIsAdjusting()) settings.fillRate = value/100.0f;
-	        	
 	            currentFillRate.setText(String.format("%.2f", value/100.0f));
         	}
-        	else if (source == mutationRateSlider)
-        	{
+        	else if (source == mutationRateSlider){
         		if (!source.getValueIsAdjusting()) settings.mutationRate = value/1000.0f;
         		currentMutationRate.setText(String.format("%.3f", value/1000.0f));
-        		
         	}
-        	else if (source == crossoverRateSlider)
-        	{
+        	else if (source == crossoverRateSlider){
         		if (!source.getValueIsAdjusting()) settings.crossoverRate = value/100.0f;
-        		
         		currentCrossoverRate.setText(String.format("%.2f", value/100.0f));
-        		
         	}
-        	else if (source == matingEnergyRequirementSlider)
-        	{
+        	else if (source == matingEnergyRequirementSlider){
         		if (!source.getValueIsAdjusting()) settings.matingEnergyCost = value/100.0f;
         		currentMatingEnergyRequirement.setText(String.format("%.2f", value/100.0f));
         	}
-        	else if (source == eatingEnergyGainSlider)
-        	{
+        	else if (source == eatingEnergyGainSlider){
         		if (!source.getValueIsAdjusting()) settings.eatingEnergyGain = value/100.0f;
         		currentEatingEnergyGain.setText(String.format("%.2f", value/100.0f));
         	}    
-        	else if (source == veryHungryThresholdSlider)
-        	{
+        	else if (source == veryHungryThresholdSlider){
         		if (!source.getValueIsAdjusting()) settings.veryHungryThreshold = value/100.0f;
         		currentVeryHungryThreshold.setText(String.format("%.2f", value/100.0f));
         	}
-        	else if (source == startEnergyRateSlider)
-        	{
+        	else if (source == startEnergyRateSlider){
         		if (!source.getValueIsAdjusting()) settings.startEnergyRate = value/100.0f;
         		currentStartEnergyRate.setText(String.format("%.2f", value/100.0f));
         	}
-        	else if (source == moveStrengthModifierSlider)
-        	{
+        	else if (source == moveStrengthModifierSlider){
         		if (!source.getValueIsAdjusting()) settings.moveStrengthModifier = value/100.0f;
         		currentMoveStrengthModifier.setText(String.format("%.2f", value/100.0f));
         	}
-        	else if (source == cellTypeAmountSlider)
-        	{
+        	else if (source == cellTypeAmountSlider){
         		if (!source.getValueIsAdjusting()) settings.cellTypesAmount = value;
         		currentCellTypeAmount.setText(String.valueOf(value));
         	}
@@ -517,29 +469,21 @@ public class Drawer extends JPanel {
 	        	if (e.getStateChange() == ItemEvent.DESELECTED) {
 	        		settings.allowCannibalism = false;
 	        	}
-	        	else {
-	        		settings.allowCannibalism = true;
-	        	}
+	        	else settings.allowCannibalism = true;
 	        }
 	        if (source == allowEqualityButton) {
 	        	if (e.getStateChange() == ItemEvent.DESELECTED) {
 	        		settings.equality = false;
 	        	}
-	        	else {
-	        		settings.equality = true;
-	        	}
+	        	else settings.equality = true;
 	        }
-	        
-
-	        
 	    }
 	}
 	
 	// updates a slider to fit with someone changing to their own initial settings
 	private void updateSliderValues(char c){
 		Settings set = Settings.getInstance();
-		set.newSettings(c);
-		
+		set.newSettings(c);		
 		
 		fillRateSlider.setValue((int)(set.fillRate*100));
 		currentFillRate.setText(String.format("%.2f", set.fillRate));	
@@ -569,5 +513,8 @@ public class Drawer extends JPanel {
 		currentCellTypeAmount.setText(String.valueOf(set.cellTypesAmount));
 		
 		allowCannibalismButton.setSelected(set.allowCannibalism);
+		allowEqualityButton.setSelected(set.equality);
+		
+		world.setIterations(set.iterationRestAmount);
 	}
 }

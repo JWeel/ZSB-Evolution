@@ -1,5 +1,4 @@
 package framework;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -19,19 +18,15 @@ public class World {
 	
 	public int xOffSet = 0;
 	public int yOffSet = 0;
-	
 	public static int maxTypes = 9; // voor koen
-	
 	private int iterations = 1;
 	
 	Tile selected;		
-			
 	private Tile[][] tileArray = new Tile[TILE_COUNT][TILE_COUNT];
 	
 	// create ArrayList of cells with enough memory
 	public ArrayList<Cell> currentCells = new ArrayList<Cell>(MEMORY_SIZE);
 	public ArrayList<Cell> nextCells = new ArrayList<Cell>(MEMORY_SIZE);
-	
 	public CrossoverBreeder cBreeder =  new CrossoverBreeder();
 	
 	public boolean movingUp = false;
@@ -52,31 +47,22 @@ public class World {
 	}
 	
 	public void run(){
-		
 		while (true) {
-			
 			try {
 				Thread.sleep(50);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-				
 			if (doIterate && iterations > 0) {
 				iterate();
 				int newIt = iterations - 1;
 				// done with iterations
 				if (newIt == 0) {
 					doIterate = false;
-					
-					// here set the new starting value of iterations after iterating
-
 					setIterations(Settings.getInstance().iterationRestAmount+1);
-
 					frame.notifyIterationsEnd();
-
 				}
 				setIterations(iterations - 1);
-				
 			}
 			moveBoardView();
 			frame.repaint();
@@ -93,11 +79,8 @@ public class World {
 		Random random = RandomGenerator.getInstance().getRandom();
 		
 		int minType = 1;
-		int diffTypes = settings.cellTypesAmount;            //2 + (int)(random.nextDouble() * ((maxTypes - 2) + 1));	 // 2,3 or 4 
+		int diffTypes = settings.cellTypesAmount;
 		float percentageWorldFilled = settings.fillRate; 	
-		
-		////System.out.println("different types: " + diffTypes);
-		
 		float probabilityCellGen = Math.abs(1.0f - percentageWorldFilled); // 30% prob that a cell gets placed on a tile
 		
 		boolean goOn = true;
@@ -120,12 +103,10 @@ public class World {
 							currentCells.add(new Cell(this, tile.x, tile.y, cellType));
 						}
 					}
-					//System.out.println((currentCells.size() / (float)(tileCount * tileCount)));
 					goOn = (currentCells.size() / (float)(TILE_COUNT * TILE_COUNT)) < percentageWorldFilled;
 				}
 			}
 		}
-
 		sortCellsBySpeed(currentCells);
 		System.out.println("n cells after populate: " + currentCells.size());
 	}
@@ -142,36 +123,27 @@ public class World {
 		for (Cell c : currentCells) {
 			c.update();	
 		}
-		
 		// calculate death rate
 		for (Cell c : currentCells) {
-			if (c.isAlive() == false) {
-				lastStepCellsDied++;
-			}
+			if (c.isAlive() == false) lastStepCellsDied++;
 		}
 		
 		StatisticManager.getInstance().takeSnapshot(this, 1);
 		
-
 		System.out.println("cells died: " + lastStepCellsDied);
 		System.out.println("cells born: " + lastStepCellsBorn);
 		StatisticManager.getInstance().printCellStatistics();
 		
 		currentCells = new ArrayList<Cell>(MEMORY_SIZE);
-		 
 		for (Cell nc : nextCells) {
-			if (nc.isAlive()) {
-				currentCells.add(nc);
-			}
+			if (nc.isAlive()) currentCells.add(nc);
 		}		
 		
 		// sort cells according to speed.
 		// that will guarantee that fast cells move first
 		sortCellsBySpeed(currentCells);
-		//for (Cell c : currentCells) { //System.out.println(c.properties.getSpeed()); }
 		
 		System.out.println("n cells alive: " + currentCells.size());
-		
 		nextCells = new ArrayList<Cell>(MEMORY_SIZE);
 	}
 	
@@ -283,7 +255,6 @@ public class World {
 	}
 	
 	public void addCell(Cell c){
-
 		currentCells.add(c);
 	}
 	
@@ -292,18 +263,10 @@ public class World {
 	}
 	
 	private void moveBoardView() {
-		if(movingUp){
-			moveUp();
-		}
-		if(movingDown){
-			moveDown();
-		}
-		if(movingLeft){
-			moveLeft();
-		}
-		if(movingRight){
-			moveRight();
-		}
+		if(movingUp) moveUp();
+		if(movingDown) moveDown();
+		if(movingLeft) moveLeft();
+		if(movingRight)	moveRight();
 	}
 	
 	private void moveUp(){
@@ -332,8 +295,7 @@ public class World {
 	
 	public Cell getCellAtPositionNext(int px, int py) {
 		for (Cell c : nextCells) {
-			if (c.x == px && c.y == py) return c;
-			
+			if (c.x == px && c.y == py) return c;		
 		}
 		return null;
 	}
@@ -352,6 +314,5 @@ public class World {
 	
 	public void removeCell(Cell cell) {
 		currentCells.remove(cell);
-	}
-	
+	}	
 }

@@ -10,13 +10,11 @@ public class Settings {
 	
 	public float eatingEnergyGain;
 	public float veryHungryThreshold;
-	
 	public float startEnergyRate; 
 	public float moveStrengthModifier;
 	
 	public boolean allowCannibalism;
 	public boolean equality;
-	
 	public int iterationRestAmount;
 	public int cellTypesAmount;
 
@@ -36,7 +34,6 @@ public class Settings {
 		iterationRestAmount = 1;
 		cellTypesAmount = 1;
 		equality = false;
-
 	}
 
 	// set your own initial settings here
@@ -52,9 +49,7 @@ public class Settings {
 	}
 	
 	// change all settings
-
 	public void setSettings (float fR, float mR, float cR, float mEC, float eEG, float vHT, float sER, boolean aC, float mSM, int iRA, int cTA, boolean eq){
-
 		fillRate = fR;
 		mutationRate = mR;
 		crossoverRate = cR;
@@ -67,13 +62,10 @@ public class Settings {
 		iterationRestAmount = iRA;
 		cellTypesAmount = cTA;
 		equality = eq;
-
 	}
 	
 	public static Settings getInstance() {
-		if (Settings.instance == null) {
-			Settings.instance = new Settings();
-		}
+		if (Settings.instance == null) Settings.instance = new Settings();
 		return Settings.instance;
 	}
 }
